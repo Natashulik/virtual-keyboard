@@ -38,31 +38,40 @@ arrKeys1.forEach((item) => {
   key.className = 'key';
   key.innerText = item;
   line1.appendChild(key);
-})
+});
 
 const arrKeys2 = ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '|', 'DEL'];
-arrKeys2.forEach((item) => {
+arrKeys2.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
+  if (index >= 1 && index <= 10) {
+    key.className = 'key letter';
+  }
   key.innerText = item;
   line2.appendChild(key);
-})
+});
 
 const arrKeys3 = ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'ENTER'];
-arrKeys3.forEach((item) => {
+arrKeys3.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
+  if (index >= 1 && index <= 9) {
+    key.className = 'key letter';
+  }
   key.innerText = item;
   line3.appendChild(key);
-})
+});
 
 const arrKeys4 = ['Shift', '|', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '/', 'up', 'Shift'];
-arrKeys4.forEach((item) => {
+arrKeys4.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
+  if (index >= 2 && index <= 8) {
+    key.className = 'key letter';
+  }
   key.innerText = item;
   line4.appendChild(key);
-})
+});
 
 const arrKeys5 = ['Ctrlt', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', 'left', 'down', 'right'];
 arrKeys5.forEach((item) => {
@@ -70,11 +79,27 @@ arrKeys5.forEach((item) => {
   key.className = 'key';
   key.innerText = item;
   line5.appendChild(key);
-})
+});
 
 document.addEventListener('keydown', (event) => {
   console.log(event.code);
 });
 
+/* make capslock */
 
-screen.innerText="uabcf g iueb fygowiye  fbvo8wae ybfo8webf8wae bfv8aebgfp9aeb g9a7uegb0fp9 7gbaw e097vfbew09fgbv0pa7f"
+const keys = document.querySelectorAll('.key');
+const letters = document.querySelectorAll('.letter');
+
+keys.forEach((key) => {
+  key.addEventListener('click', function () {
+  /* включение и выключение capslock */
+    if (this.innerText === 'Caps Lock') {
+      this.classList.toggle('active');
+      letters.forEach((item) => {
+        item.classList.toggle('uppercase');
+      });
+    }
+
+    /*     */
+  });
+});
