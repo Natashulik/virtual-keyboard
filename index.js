@@ -40,7 +40,7 @@ arrKeys1.forEach((item) => {
   line1.appendChild(key);
 });
 
-const arrKeys2 = ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '|', 'DEL'];
+const arrKeys2 = ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'DEL'];
 arrKeys2.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
@@ -62,7 +62,7 @@ arrKeys3.forEach((item, index) => {
   line3.appendChild(key);
 });
 
-const arrKeys4 = ['Shift', '|', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '/', 'up', 'Shift'];
+const arrKeys4 = ['Shift', '\\', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '/', '⇧', 'Shift'];
 arrKeys4.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
@@ -73,7 +73,7 @@ arrKeys4.forEach((item, index) => {
   line4.appendChild(key);
 });
 
-const arrKeys5 = ['Ctrlt', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', 'left', 'down', 'right'];
+const arrKeys5 = ['Ctrlt', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨'];
 arrKeys5.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
