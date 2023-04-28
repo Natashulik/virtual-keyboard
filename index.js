@@ -74,15 +74,12 @@ arrKeys4.forEach((item, index) => {
 });
 
 const arrKeys5 = ['Ctrlt', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', 'left', 'down', 'right'];
-arrKeys5.forEach((item) => {
+arrKeys5.forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
+  if (index === 3) { key.className = 'key space'; }
   key.innerText = item;
   line5.appendChild(key);
-});
-
-document.addEventListener('keydown', (event) => {
-  console.log(event.code);
 });
 
 /* make capslock */
@@ -91,15 +88,19 @@ const keys = document.querySelectorAll('.key');
 const letters = document.querySelectorAll('.letter');
 
 keys.forEach((key) => {
-  key.addEventListener('click', function () {
-  /* включение и выключение capslock */
-    if (this.innerText === 'Caps Lock') {
+  key.addEventListener('click', function pressKey() {
+    if (this.innerText === 'Caps Lock') { // включение и выключение capslock
       this.classList.toggle('active');
       letters.forEach((item) => {
         item.classList.toggle('uppercase');
       });
+    } else if (this.innerText === 'Backspace') { // работа Backspace
+      const str = screen.innerText;
+      screen.innerText = str.substring(0, str.length - 1);
+    } else if (this.className === 'key space') { // работа пробела
+      screen.innerText += ' ';
+    } else {
+      screen.innerText += this.innerText;
     }
-
-    /*     */
   });
 });

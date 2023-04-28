@@ -63,7 +63,6 @@
     height: 40px;
     text-align: center;
     border: rgba(146, 142, 142, 0.4);
-   /* transition: 0.5s;*/
     margin: 0 4px;
     line-height: 40px;
     border-radius: 5px;
@@ -82,16 +81,18 @@
 }
 
 .key:hover {
-    color: orangered;
+    color: rgb(232, 18, 18);
     box-shadow: inset 2px 2px 5px #0002,
     inset -2px -2px 5px #0002;
 }
 
-.key.active {
-  color: orangered;
-  background-color:rgb(213, 197, 197);
+.key.active,
+.key:active {
+  color: rgb(232, 18, 18);
+  background-color:rgb(212, 195, 195);
   box-shadow: inset 2px 2px 5px #0002,
   inset -2px -2px 5px #0002;
+  border-color:rgb(232, 18, 18)
 }
 
 
