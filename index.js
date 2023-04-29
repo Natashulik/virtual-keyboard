@@ -3,17 +3,13 @@ const body = document.querySelector('body');
 const screen = document.createElement('div');
 const keyboard = document.createElement('div');
 
-
 screen.className = 'screen';
 screen.contentEditable = true;
-
 
 keyboard.className = 'keyboard';
 
 body.appendChild(screen);
 body.appendChild(keyboard);
-
-
 
 /* add lines */
 
@@ -43,8 +39,8 @@ const arrKeys = [
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'DEL'],
   ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'ENTER'],
   ['Shift', '\\', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', ',', '/', '⇧', 'Shift'],
-  ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨']
-]
+  ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨'],
+];
 
 arrKeys[0].forEach((item) => {
   const key = document.createElement('div');
@@ -97,51 +93,63 @@ arrKeys[4].forEach((item, index) => {
 const keys = document.querySelectorAll('.key');
 const letters = document.querySelectorAll('.letter');
 
-const audio = new Audio("https://www.fesliyanstudios.com/play-mp3/648");
-let altPressed = false;  //звук изначально отключен
-let sound = function() {
+const audio = new Audio('https://www.fesliyanstudios.com/play-mp3/648');
+let altPressed = false; // звук изначально отключен
+function sound() {
   audio.play();
-};
+}
 
 keys.forEach((key) => {
   key.addEventListener('click', function pressKey() {
     if (this.innerText === 'Caps Lock') { // включение и выключение capslock
-      this.classList.toggle('active');
+      this.classList.toggle('activeCap');
       letters.forEach((item) => {
         item.classList.toggle('uppercase');
       });
     } else if (this.innerText === 'Backspace') { // работа Backspace
       const str = screen.innerText;
       screen.innerText = str.slice(0, str.length - 1);
-    }
-    else if (this.innerText === 'DEL') { // работа DELETE
+    } else if (this.innerText === 'DEL') { // работа DELETE
       const str = screen.innerText;
       screen.innerText = str.slice(0, -1);
-    }
-    else if (this.className === 'key space') { // работа пробела
+    } else if (this.className === 'key space') { // работа пробела
       screen.innerText += ' ';
-    }
-    else if (this.className === 'key alt_left') {
-      if(!altPressed) {
-        keys.forEach(key => {
-          key.addEventListener("click", sound);
+    } else if (this.innerText === 'ENTER') { // работа ENTER
+      screen.innerText += '\n';
+    } else if (this.className === 'key alt_left') {
+      if (!altPressed) {
+        keys.forEach((item) => {
+          item.addEventListener('click', sound);
         });
         altPressed = true;
-      } else if(altPressed){
-        keys.forEach(key => {
-          key.removeEventListener("click", sound);
+      } else if (altPressed) {
+        keys.forEach((item) => {
+          item.removeEventListener('click', sound);
         });
         altPressed = false;
       }
-    }
-    
-    else {
+    } else {
       screen.innerText += this.innerText;
     }
   });
 });
 
+/* нажатие  на компе подсвечивает виртуальную клавиатуру  */
 
+document.onkeydown = (function lightKey(event) {
+  keys.forEach((element) => {
+    element.classList.remove('active');
+  });
 
+  for (let i = 0; i < keys.length; i += 1) {
+    if (keys[i].innerText === event.key) keys[i].classList.add('active');
+  }
+});
 
+/* info */
 
+const info = document.createElement('div');
+
+info.className = 'info';
+info.innerHTML = '<p>Клавиатура создана в операционной системе Windows </p><p> Для переключения язык: левые ctrl + alt</p><p> Для включения/выключения звука: левый alt</p>';
+body.appendChild(info);

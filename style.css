@@ -16,7 +16,7 @@
 
 .screen {
   width: 800px;
-  height: 250px;
+  height: 230px;
   border: 3px solid rgba(222, 215, 215, 0.7);
   margin: 20px auto;
   padding: 25px;
@@ -39,7 +39,7 @@
 
 .keyboard {
     width: 800px;
-    height: 400px;
+    height: 350px;
     border: 2px solid rgba(222, 215, 215, 0.7);
     margin: 20px auto;
     padding: 20px;
@@ -89,15 +89,20 @@
     box-shadow: inset 2px 2px 5px #0002,
     inset -2px -2px 5px #0002;
 }
+.activeCap  {
+  color: rgb(232, 18, 18);
+  background-color:rgb(212, 190, 190);
+  box-shadow: inset 2px 2px 5px #0002,
+  inset -2px -2px 5px #0002;
+}
 
 .key.active,
 .key:active {
   color: rgb(232, 18, 18);
-  background-color:rgb(212, 195, 195);
+  background-color:rgb(212, 190, 190);
   box-shadow: inset 2px 2px 5px #0002,
   inset -2px -2px 5px #0002;
-  border-color:rgb(232, 18, 18)
-}
+ }
 
 
 
@@ -123,6 +128,16 @@
 
 .line5 .key:nth-child(4) {
     width: 260px;
+}
+
+.info {
+   width: 750px;
+  height: 170px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 5px;
+  line-height: 25px;
+
 }
 
 
