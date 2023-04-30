@@ -34,7 +34,7 @@ line5.className = 'line line5';
 keyboard.appendChild(line5);
 
 /* add keys */
-const arrKeys = [
+const arrKeysEn = [
   ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'DEL'],
   ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'ENTER'],
@@ -42,53 +42,66 @@ const arrKeys = [
   ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨'],
 ];
 
-arrKeys[0].forEach((item) => {
+const arrKeysRu = [
+  ['Ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+  ['Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\', 'DEL'],
+  ['Caps Lock', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'ENTER'],
+  ['Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', '/', '⇧', 'Shift'],
+  ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨'],
+];
+
+arrKeysEn[0].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
+  if (index === 0) key.className = 'key letter';
+  if (index === 13) key.className = 'key backspace';
   key.innerText = item;
   line1.appendChild(key);
 });
 
-arrKeys[1].forEach((item, index) => {
+arrKeysEn[1].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index >= 1 && index <= 10) {
-    key.className = 'key letter';
-  }
+  if (index === 0) key.className = 'key tab';
+  if (index >= 1 && index <= 12) key.className = 'key letter';
+  if (index === 14) key.className = 'key del';
   key.innerText = item;
   line2.appendChild(key);
 });
 
-arrKeys[2].forEach((item, index) => {
+arrKeysEn[2].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index >= 1 && index <= 9) {
-    key.className = 'key letter';
-  }
+  if (index === 0) key.className = 'key caps';
+  if (index >= 1 && index <= 11) key.className = 'key letter';
+  if (index === 12) key.className = 'key enter';
   key.innerText = item;
   line3.appendChild(key);
 });
 
-arrKeys[3].forEach((item, index) => {
+arrKeysEn[3].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index >= 2 && index <= 8) {
-    key.className = 'key letter';
-  }
+  if (index === 0 || index === 13) key.className = 'key shift';
+  if (index >= 2 && index <= 9) key.className = 'key letter';
+  if (index === 12) key.className = 'key arrow';
   key.innerText = item;
   line4.appendChild(key);
 });
 
-arrKeys[4].forEach((item, index) => {
+arrKeysEn[4].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index === 2) { key.className = 'key alt_left'; }
-  if (index === 3) { key.className = 'key space'; }
+  if (index === 0 || index === 5) key.className = 'key ctrl';
+  if (index === 2 || index === 4) key.className = 'key alt';
+  if (index === 1) key.className = 'key win';
+  if (index === 3) key.className = 'key space';
+  if (index === 6 || index === 7 || index === 8) key.className = 'key arrow';
   key.innerText = item;
   line5.appendChild(key);
 });
 
-/* make capslock */
+/* работа клавиш */
 
 const keys = document.querySelectorAll('.key');
 const letters = document.querySelectorAll('.letter');
@@ -101,22 +114,30 @@ function sound() {
 
 keys.forEach((key) => {
   key.addEventListener('click', function pressKey() {
-    if (this.innerText === 'Caps Lock') { // включение и выключение capslock
-      this.classList.toggle('activeCap');
+    if (this.classList.contains('caps')) { // включение и выключение capslock
+      this.classList.toggle('active');
       letters.forEach((item) => {
         item.classList.toggle('uppercase');
       });
-    } else if (this.innerText === 'Backspace') { // работа Backspace
+    } else if (this.classList.contains('backspace')) { // работа Backspace
       const str = screen.innerText;
       screen.innerText = str.slice(0, str.length - 1);
-    } else if (this.innerText === 'DEL') { // работа DELETE
+    } else if (this.classList.contains('del')) { // работа DELETE
       const str = screen.innerText;
-      screen.innerText = str.slice(0, -1);
-    } else if (this.className === 'key space') { // работа пробела
+      screen.innerText = str.slice(0, str.length - 1);
+    } else if (this.classList.contains('space')) { // работа пробела
       screen.innerText += ' ';
-    } else if (this.innerText === 'ENTER') { // работа ENTER
+    } else if (this.classList.contains('tab')) { // работа пробела
+      screen.innerText += '    ';
+    } else if (this.classList.contains('enter')) { // работа ENTER
       screen.innerText += '\n';
-    } else if (this.className === 'key alt_left') {
+    } else if (this.classList.contains('shift')) { // работа ENTER
+      screen.innerText += '';
+    } else if (this.classList.contains('ctrl')) { // работа ENTER
+      screen.innerText += '';
+    } else if (this.classList.contains('win')) { // работа ENTER
+      screen.innerText += '';
+    } else if (this.classList.contains('alt')) {
       if (!altPressed) {
         keys.forEach((item) => {
           item.addEventListener('click', sound);
@@ -136,20 +157,29 @@ keys.forEach((key) => {
 
 /* нажатие  на компе подсвечивает виртуальную клавиатуру  */
 
-document.onkeydown = (function lightKey(event) {
-  keys.forEach((element) => {
+document.onkeydown = function lightKey(event) {
+  /*
+    keys.forEach((element) => {
     element.classList.remove('active');
-  });
+  }); */
 
   for (let i = 0; i < keys.length; i += 1) {
-    if (keys[i].innerText === event.key) keys[i].classList.add('active');
+    if (keys[i].innerText.toLowerCase() === event.key.toLowerCase()) { // подсвечивает при нажатии
+      keys[i].classList.add('active');
+    }
   }
-});
+};
 
-/* info */
+document.onkeyup = function upKeys() { // при отпускании клавиши подсветка гаснет
+  keys.forEach((key) => {
+    key.classList.remove('active');
+  });
+};
+
+/* блок info */
 
 const info = document.createElement('div');
 
 info.className = 'info';
-info.innerHTML = '<p>Клавиатура создана в операционной системе Windows </p><p> Для переключения язык: левые ctrl + alt</p><p> Для включения/выключения звука: левый alt</p>';
+info.innerHTML = '<p>Клавиатура создана в операционной системе Windows </p><p> Для переключения языка: левые ctrl + alt</p><p> Для включения/выключения звука: левый alt</p>';
 body.appendChild(info);
