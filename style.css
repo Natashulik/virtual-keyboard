@@ -90,12 +90,6 @@
     box-shadow: inset 2px 2px 5px #0002,
     inset -2px -2px 5px #0002;
 }
-.activeCap  {
-  color: rgb(232, 18, 18);
-  background-color: rgb(212, 190, 190);/* rgb(247, 254, 141);*/
-  box-shadow: inset 2px 2px 5px #0002,
-  inset -2px -2px 5px #0002;
-}
 
 .key.active,
 .key:active {

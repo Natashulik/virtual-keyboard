@@ -82,9 +82,10 @@ arrKeysEn[2].forEach((item, index) => {
 arrKeysEn[3].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index === 0 || index === 13) key.className = 'key shift';
+  if (index === 0) key.className = 'key shift shift_left';
+  if (index === 13) key.className = 'key shift shift_right';
   if (index >= 2 && index <= 9) key.className = 'key letter';
-  if (index === 12) key.className = 'key arrow';
+  if (index === 12) key.className = 'key arrow arrow_up';
   key.innerText = item;
   line4.appendChild(key);
 });
@@ -92,11 +93,15 @@ arrKeysEn[3].forEach((item, index) => {
 arrKeysEn[4].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
-  if (index === 0 || index === 5) key.className = 'key ctrl';
-  if (index === 2 || index === 4) key.className = 'key alt';
+  if (index === 0) key.className = 'key ctrl ctrl_left';
+  if (index === 5) key.className = 'key ctrl ctrl_right';
+  if (index === 2) key.className = 'key alt alt_left';
+  if (index === 4) key.className = 'key alt alt_right';
   if (index === 1) key.className = 'key win';
   if (index === 3) key.className = 'key space';
-  if (index === 6 || index === 7 || index === 8) key.className = 'key arrow';
+  if (index === 6) key.className = 'key arrow arrow_left';
+  if (index === 7) key.className = 'key arrow arrow_down';
+  if (index === 8) key.className = 'key arrow arrow_right';
   key.innerText = item;
   line5.appendChild(key);
 });
@@ -131,11 +136,11 @@ keys.forEach((key) => {
       screen.innerText += '    ';
     } else if (this.classList.contains('enter')) { // работа ENTER
       screen.innerText += '\n';
-    } else if (this.classList.contains('shift')) { // работа ENTER
+    } else if (this.classList.contains('shift')) { // работа shift
       screen.innerText += '';
-    } else if (this.classList.contains('ctrl')) { // работа ENTER
+    } else if (this.classList.contains('ctrl')) { // работа ctrl
       screen.innerText += '';
-    } else if (this.classList.contains('win')) { // работа ENTER
+    } else if (this.classList.contains('win')) { // работа win
       screen.innerText += '';
     } else if (this.classList.contains('alt')) {
       if (!altPressed) {
@@ -158,17 +163,74 @@ keys.forEach((key) => {
 /* нажатие  на компе подсвечивает виртуальную клавиатуру  */
 
 document.onkeydown = function lightKey(event) {
-  /*
-    keys.forEach((element) => {
-    element.classList.remove('active');
-  }); */
-
   for (let i = 0; i < keys.length; i += 1) {
     if (keys[i].innerText.toLowerCase() === event.key.toLowerCase()) { // подсвечивает при нажатии
       keys[i].classList.add('active');
     }
+    if (keys[i].classList.contains('del') && event.code === 'Delete') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('caps') && event.code === 'CapsLock') {
+      //  keys[i].classList.add('active');
+
+      keys[i].classList.toggle('active');
+      if (keys[i].classList.contains('active')) {
+        letters.forEach((item) => {
+          item.classList.toggle('uppercase');
+        });
+      }
+    }
+    if (keys[i].classList.contains('ctrl_left') && event.code === 'ControlLeft') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('ctrl_right') && event.code === 'ControlRight') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('win') && event.code === 'MetaLeft') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('shift_left') && event.code === 'ShiftLeft') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('shift_right') && event.code === 'ShiftRight') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('alt_left') && event.code === 'AltLeft') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('alt_right') && event.code === 'AltRight') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('space') && event.code === 'Space') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('arrow_up') && event.code === 'ArrowUp') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('arrow_left') && event.code === 'ArrowLeft') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('arrow_right') && event.code === 'ArrowRight') {
+      keys[i].classList.add('active');
+    }
+    if (keys[i].classList.contains('arrow_down') && event.code === 'ArrowDown') {
+      keys[i].classList.add('active');
+    }
   }
 };
+/*
+let cap = document.querySelector('.caps');
+
+document.onkeydown= function(event) {
+  if (event.code === 'CapsLock') {
+    cap.classList.toggle('active');
+    if (cap.classList.contains('active')) {
+      letters.forEach((item) => {
+        item.classList.toggle('uppercase');
+      });
+    }
+  }
+}; */
 
 document.onkeyup = function upKeys() { // при отпускании клавиши подсветка гаснет
   keys.forEach((key) => {
@@ -181,5 +243,6 @@ document.onkeyup = function upKeys() { // при отпускании клави
 const info = document.createElement('div');
 
 info.className = 'info';
-info.innerHTML = '<p>Клавиатура создана в операционной системе Windows </p><p> Для переключения языка: левые ctrl + alt</p><p> Для включения/выключения звука: левый alt</p>';
+info.innerHTML = `<p>Клавиатура создана в операционной системе Windows </p>
+    <p> Для переключения языка: левые ctrl + alt</p><p> Для включения/выключения звука: левый или правый alt</p>`;
 body.appendChild(info);
