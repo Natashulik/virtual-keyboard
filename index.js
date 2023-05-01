@@ -34,7 +34,8 @@ line5.className = 'line line5';
 keyboard.appendChild(line5);
 
 /* add keys */
-const arrKeysEn = [
+
+let arrKeysEn = [
   ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
   ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'DEL'],
   ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'ENTER'],
@@ -50,7 +51,9 @@ const arrKeysRu = [
   ['Ctrl', 'Win', 'Alt', ' ', 'Alt', 'Ctrl', '⇦', '⇩', '⇨'],
 ];
 
-arrKeysEn[0].forEach((item, index) => {
+let arrKeys = arrKeysEn;
+
+arrKeys[0].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
   if (index === 0) key.className = 'key letter';
@@ -59,7 +62,7 @@ arrKeysEn[0].forEach((item, index) => {
   line1.appendChild(key);
 });
 
-arrKeysEn[1].forEach((item, index) => {
+arrKeys[1].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
   if (index === 0) key.className = 'key tab';
@@ -69,7 +72,7 @@ arrKeysEn[1].forEach((item, index) => {
   line2.appendChild(key);
 });
 
-arrKeysEn[2].forEach((item, index) => {
+arrKeys[2].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
   if (index === 0) key.className = 'key caps';
@@ -79,7 +82,7 @@ arrKeysEn[2].forEach((item, index) => {
   line3.appendChild(key);
 });
 
-arrKeysEn[3].forEach((item, index) => {
+arrKeys[3].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
   if (index === 0) key.className = 'key shift shift_left';
@@ -90,7 +93,7 @@ arrKeysEn[3].forEach((item, index) => {
   line4.appendChild(key);
 });
 
-arrKeysEn[4].forEach((item, index) => {
+arrKeys[4].forEach((item, index) => {
   const key = document.createElement('div');
   key.className = 'key';
   if (index === 0) key.className = 'key ctrl ctrl_left';
@@ -132,7 +135,7 @@ keys.forEach((key) => {
       screen.innerText = str.slice(0, str.length - 1);
     } else if (this.classList.contains('space')) { // работа пробела
       screen.innerText += ' ';
-    } else if (this.classList.contains('tab')) { // работа пробела
+    } else if (this.classList.contains('tab')) { // работа tab
       screen.innerText += '    ';
     } else if (this.classList.contains('enter')) { // работа ENTER
       screen.innerText += '\n';
@@ -167,6 +170,10 @@ document.onkeydown = function lightKey(event) {
     if (keys[i].innerText.toLowerCase() === event.key.toLowerCase()) { // подсвечивает при нажатии
       keys[i].classList.add('active');
     }
+    if (event.code === 'Tab') {
+      event.preventDefault();
+    }
+
     if (keys[i].classList.contains('del') && event.code === 'Delete') {
       keys[i].classList.add('active');
     }
@@ -216,21 +223,11 @@ document.onkeydown = function lightKey(event) {
     if (keys[i].classList.contains('arrow_down') && event.code === 'ArrowDown') {
       keys[i].classList.add('active');
     }
-  }
-};
-/*
-let cap = document.querySelector('.caps');
-
-document.onkeydown= function(event) {
-  if (event.code === 'CapsLock') {
-    cap.classList.toggle('active');
-    if (cap.classList.contains('active')) {
-      letters.forEach((item) => {
-        item.classList.toggle('uppercase');
-      });
+    if (event.ctrlKey && event.shiftKey) {
+      arrKeysEn = arrKeysRu;
     }
   }
-}; */
+};
 
 document.onkeyup = function upKeys() { // при отпускании клавиши подсветка гаснет
   keys.forEach((key) => {
@@ -244,5 +241,141 @@ const info = document.createElement('div');
 
 info.className = 'info';
 info.innerHTML = `<p>Клавиатура создана в операционной системе Windows </p>
-    <p> Для переключения языка: левые ctrl + alt</p><p> Для включения/выключения звука: левый или правый alt</p>`;
+    <p> Для переключения языка: левые ctrl + shift</p><p> Для включения/выключения звука: левый или правый alt</p>`;
 body.appendChild(info);
+
+/* ----------------change Language--------------------------*/
+let isChanged = true;
+
+function keyCombination(func, ...codes) {
+  const pressed = new Set();
+  document.addEventListener('keydown', (event) => {
+    pressed.add(event.code);
+
+    /* codes.forEach(code=> { if (!pressed.has(code)) return;}) */
+    for (let i = 0; i < codes.length; i += 1) {
+      if (!pressed.has(codes[i])) return;
+    }
+    pressed.clear();
+    func(isChanged); // передаем значение переменной isChanged
+  });
+
+  document.addEventListener('keyup', (event) => {
+    pressed.delete(event.code);
+    if (event.code === 'ShiftLeft' || event.code === 'ControlLeft') {
+      isChanged = !isChanged; // меняем значение переменной isChanged при отпускании клавиши
+    }
+  });
+}
+
+function change() {
+  arrKeys = (isChanged) ? arrKeysRu : arrKeysEn;
+  line1.innerHTML = '';
+  line2.innerHTML = '';
+  line3.innerHTML = '';
+  line4.innerHTML = '';
+
+  arrKeys[0].forEach((item, index) => {
+    const key = document.createElement('div');
+    key.className = 'key';
+    if (index === 0) {
+      key.innerText = item.toLowerCase();
+      key.className = 'key letter';
+    }
+    key.innerText = item;
+    if (index === 13) key.className = 'key backspace';
+    line1.appendChild(key);
+  });
+
+  arrKeys[1].forEach((item, index) => {
+    const key = document.createElement('div');
+    key.className = 'key';
+    if (index !== 0 && index !== 14) {
+      key.innerText = item.toLowerCase();
+    } else key.innerText = item;
+    if (index === 0) key.className = 'key tab';
+    if (index >= 1 && index <= 12) key.className = 'key letter';
+    if (index === 14) key.className = 'key del';
+    line2.appendChild(key);
+  });
+
+  arrKeys[2].forEach((item, index) => {
+    const key = document.createElement('div');
+    key.className = 'key';
+    if (index !== 0 && index !== 12) {
+      key.innerText = item.toLowerCase();
+    } else key.innerText = item;
+    if (index === 0) key.className = 'key caps';
+    if (index >= 1 && index <= 11) key.className = 'key letter';
+    if (index === 12) key.className = 'key enter';
+    line3.appendChild(key);
+  });
+
+  arrKeys[3].forEach((item, index) => {
+    const key = document.createElement('div');
+    key.className = 'key';
+    if (index !== 0 && index !== 12 && index !== 13) {
+      key.innerText = item.toLowerCase();
+    } else key.innerText = item;
+    if (index === 0) key.className = 'key shift shift_left';
+    if (index === 13) key.className = 'key shift shift_right';
+    if (index >= 2 && index <= 9) key.className = 'key letter';
+    if (index === 12) key.className = 'key arrow arrow_up';
+    line4.appendChild(key);
+  });
+
+  const keys2 = document.querySelectorAll('.key');
+  const letters2 = document.querySelectorAll('.letter');
+
+  let altPressed2 = false; // звук изначально отключен
+  function sound2() {
+    audio.play();
+  }
+
+  keys2.forEach((key) => {
+    key.addEventListener('click', function pressKey() {
+      if (this.classList.contains('caps')) { // включение и выключение capslock
+        this.classList.toggle('active');
+        letters2.forEach((item) => {
+          item.classList.toggle('uppercase');
+        });
+      } else if (this.classList.contains('backspace')) { // работа Backspace
+        const str = screen.innerText;
+        screen.innerText = str.slice(0, str.length - 1);
+      } else if (this.classList.contains('del')) { // работа DELETE
+        const str = screen.innerText;
+        screen.innerText = str.slice(0, str.length - 1);
+      } else if (this.classList.contains('space')) { // работа пробела
+        screen.innerText += ' ';
+      } else if (this.classList.contains('tab')) { // работа tab
+        screen.innerText += '    ';
+      } else if (this.classList.contains('enter')) { // работа ENTER
+        screen.innerText += '\n';
+      } else if (this.classList.contains('shift')) { // работа shift
+        screen.innerText += '';
+      } else if (this.classList.contains('ctrl')) { // работа ctrl
+        screen.innerText += '';
+      } else if (this.classList.contains('win')) { // работа win
+        screen.innerText += '';
+      } else if (this.classList.contains('alt')) {
+        if (!altPressed2) {
+          keys.forEach((item) => {
+            item.addEventListener('click', sound2);
+          });
+          altPressed2 = true;
+        } else if (altPressed2) {
+          keys.forEach((item) => {
+            item.removeEventListener('click', sound2);
+          });
+          altPressed2 = false;
+        }
+      } else {
+        screen.innerText += this.innerText;
+      }
+    });
+  });
+}
+
+keyCombination(change, 'ShiftLeft', 'ControlLeft');
+
+/*------------------------------------------*/
